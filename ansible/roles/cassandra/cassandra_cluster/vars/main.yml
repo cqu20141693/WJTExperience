@@ -1,0 +1,20 @@
+# cassandra包名称
+cassandra_package_name: apache-cassandra-3.11.10
+# cassandra主目录
+cassandra_home_path: "{{ work_path }}/cassandra"
+# cassandra数据目录
+cassandra_data_path: /var/lib/cassandra
+# cassandra日志目录
+cassandra_log_path: /var/log/cassandra
+# cassandra集群名称
+cassandra_cluster_name: cc_iiot_cassandra
+# cassandra seeds
+#cassandra_seeds: '"10.113.75.65,10.113.75.66"'
+
+# cassandra 管理员用户名
+cassandra_superuser_name: "{{ common_cassandra_username | default(cassandra) }}"
+# cassandra 管理员密码
+cassandra_superuser_password: "{{ common_cassandra_password | default(cassandra) }}"
+#默认创建数据库
+cassandra_create_keyspaces:
+  - cc_iiot

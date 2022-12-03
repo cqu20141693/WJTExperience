@@ -1,0 +1,16 @@
+# Redis父目录
+redis_parent_dir: /usr/local
+# Redis版本
+redis_version: redis-5.0.1
+# Redis的rdb文件路径
+redis_data_dir: /data/redis
+# Redis的sentinel文件路径
+redis_sentinel_dir: /data/sentinel
+# Redis的日志文件路径
+redis_log_dir: /var/log/redis
+# Redis密码
+redis_password: "{{ common_redis_password }}"
+# Redis端口
+redis_port: 6379
+# Sentinel 端口
+sentinel_port: 26379

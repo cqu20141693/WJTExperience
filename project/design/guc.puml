@@ -1,0 +1,86 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+
+class Menu{
+id
+app_id
+name
+picture
+}
+class Api{
+id
+app_id
+name
+
+}
+
+note left: 产品应用,需要配置资源(menu,api)
+class Application{
+id
+name
+}
+
+note left
+ menu和api是应用资源
+ Application是应用产品，具备menu和api资源
+ role属于应用，授权菜单和api
+ 租户用户的组织
+ 超级管理员
+end note
+
+note left: 分配资源权限(api，menu)
+class Role{
+id
+app_id
+Menu
+Api
+name
+status
+}
+
+
+note left:租户绑定数据
+class Tenant{
+id
+name
+enterprise
+status
+
+}
+
+note left:绑定租户(数据写入租户),绑定角色(用户的权限)
+class User{
+id
+tenant_id
+role_ids
+nickname
+gender
+avatar
+status
+login_name
+password
+email
+tel
+}
+
+class LoginLog{
+id
+user_id
+login_name
+login_ip
+time
+}
+class OperatorLog{
+id
+user_id
+login_name
+login_ip
+app_source
+op_module
+op_type
+time
+}
+
+@enduml

@@ -1,0 +1,50 @@
+version: '2'
+services:
+  elasticsearch:
+    image: docker.io/bitnami/elasticsearch:7.17.1
+    environment:
+      - ELASTICSEARCH_PORT_NUMBER=9200
+      - ELASTICSEARCH_NODE_PORT_NUMBER=9300
+      - ELASTICSEARCH_PLUGINS=analysis-icu
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+    volumes:
+      - '/work/es/data:/bitnami/elasticsearch/data'
+      - '/work/es/config:/opt/bitnami/elasticsearch/config'
+      - '/work/es/plugins:/bitnami/elasticsearch/plugins'
+      - '/work/es/logs:/bitnami/elasticsearch/logs'
+volumes:
+  elasticsearch_data:
+    driver: local
+
+version: '2'
+services:
+  elasticsearch-node1:
+    image: bitnami/elasticsearch:7.17.1
+    environment:
+      - ELASTICSEARCH_CLUSTER_NAME=elasticsearch-cluster
+      - ELASTICSEARCH_CLUSTER_HOSTS=elasticsearch-node1,elasticsearch-node2
+      - ELASTICSEARCH_NODE_NAME=elastic-node1
+      - ELASTICSEARCH_PORT_NUMBER=9201
+      - ELASTICSEARCH_NODE_PORT_NUMBER=9301
+    ports:
+      - '9201:9201'
+      - '9301:9301'
+    volumes:
+      - '/work/es/node1/data:/bitnami/elasticsearch/data'
+      - '/work/es/node1/elasticsearch.yml:/opt/bitnami/elasticsearch/config/elasticsearch.yml
+  elasticsearch-node2:
+    image: bitnami/elasticsearch:7.17.1
+    environment:
+      - ELASTICSEARCH_CLUSTER_NAME=elasticsearch-cluster
+      - ELASTICSEARCH_CLUSTER_HOSTS=elasticsearch-node1,elasticsearch-node2
+      - ELASTICSEARCH_NODE_NAME=elastic-node2
+      - ELASTICSEARCH_PORT_NUMBER=9202
+      - ELASTICSEARCH_NODE_PORT_NUMBER=9302
+    ports:
+      - '9202:9202'
+      - '9302:9302'
+    volumes:
+      - '/work/es/node2/data:/bitnami/elasticsearch/data'
+      - '/work/es/nod2/elasticsearch.yml:/opt/bitnami/elasticsearch/config/elasticsearch.yml

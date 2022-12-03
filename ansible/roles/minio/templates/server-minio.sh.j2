@@ -1,0 +1,54 @@
+#!/bin/bash
+export MINIO_ACCESS_KEY={{ minio_access_key }}
+export MINIO_SECRET_KEY={{ minio_secret_key }}
+
+minio_name=minio
+
+{% if groups['minio']| length >= 4 %}
+node_info="{% for minioip in groups.minio %}http://{{ minioip }}:{{ minio_port }}{{ minio_base_dir }}/data {% endfor %}"
+{% else %}
+node_info="{{ minio_base_dir }}/data"
+{% endif %}
+
+minio_port={{ minio_port }}
+log_dir={{ minio_base_dir }}/logs
+START_USER={{ minio_run_user }}
+
+[ -d ${log_dir} ] || mkdir -p ${log_dir}
+chown ${START_USER}:${START_USER} ${log_dir} -R
+
+statusfunc()
+{
+    ps -ef|grep ${minio_name} |grep -v "grep\|sh"
+}
+
+startfunc()
+{
+    nohup {{ minio_base_dir }}/bin/${minio_name} server --address {{ inventory_hostname }}:${minio_port} ${node_info} > ${log_dir}/minio.log 2>&1 &
+    echo "启动成功!"
+}
+
+stopfunc()
+{
+    kill `ps -ef|grep minio|grep -v "grep\|sh"|awk '{print $2}'` > /dev/null 2&>1
+    echo "关闭成功!"
+}
+
+case $1 in
+    start)
+    startfunc
+    ;;
+    stop)
+    stopfunc
+    ;;
+    restart)
+    stopfunc
+    sleep 1
+    startfunc
+    ;;
+    status)
+    statusfunc
+    ;;
+    *)
+    echo "用法:$0 start|stop|restart|status"
+esac

@@ -1,0 +1,20 @@
+mysql_rpm_dir: /usr/local/mysql-community
+mysql_tar_name: 8.0.15-1.el7.x86_64
+
+mysql_data_dir: /var/lib/mysql/data
+mysql_log_dir: /var/lib/mysql/logs
+
+mysql_root_password: "{{ common_mysql_password }}"
+
+mysql_repl_user: repl
+mysql_repl_password: Repl@123#@!.
+
+# 默认创建数据库和导入数据，databaseName：创建数据库名称。databaseFile：导入数据库脚本（数据库脚本放在file/sql目录下）
+mysql_create_databases:
+  - databaseName: nacos
+    databaseFile: nacos.sql
+
+# 数据库内容替换 10.113.75.73：原始内容（不做修改）
+#database_replace_content:
+#  - databaseFile: iam.sql
+#    replaceContent: 10.113.75.73/{{ common_web_address }}

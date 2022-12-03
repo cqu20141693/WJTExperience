@@ -1,0 +1,15 @@
+minio_run_user: minio
+# 存储路径
+minio_base_dir: /opt/minio
+# 访问端口
+minio_port: 9000
+# 登录账号
+minio_access_key: "{{ common_minio_accessKey | default(minio) }}"
+# 登录密码
+minio_secret_key: "{{ common_minio_secretKey | default(minio) }}"
+
+# 默认创建桶和上传文件目录  name:创建桶名称（名称数字和字母组合） localPath: 本地文件目录（存储在files/images/{dir_name}目录下）  remotePath：上传文件到桶的那个目录(后面不要有'/'）
+minio_create_buckets:
+  - name: iiot
+    localPath: /images/iiot
+    remotePath: /iiot

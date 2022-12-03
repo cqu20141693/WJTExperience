@@ -1,0 +1,91 @@
+- name: "关闭swap"
+  command: sed -ri 's/.*swap.*/#&/' /etc/fstab
+
+- name: "创建elasticsearch用户组"
+  group:
+    name: elasticsearch
+
+- name: "创建elasticsearch用户"
+  user:
+    name: elasticsearch
+    shell: /bin/bash
+    group: elasticsearch
+    password: "{{ 'cc@123' | password_hash('sha512') }}"
+    create_home: True
+    home: "{{elasticsearch_home_path}}"
+    state: present
+
+- name: "解压安装包"
+  unarchive: src={{ playbook_dir }}/files/{{ elasticsearch_package_name }}-linux-x86_64.tar.gz dest={{ elasticsearch_home_path }}
+
+- name: "拷贝elasticsearch配置文件"
+  template: src="templates/elasticsearch.yml.j2" dest="{{ elasticsearch_home_path }}/{{ elasticsearch_package_name }}/config/elasticsearch.yml" owner=elasticsearch group=elasticsearch mode=0644
+
+- name: "创建elasticsearch数据目录"
+  file:
+    path: "{{ elasticsearch_data_path }}"
+    state: directory
+    mode: '0777'
+    owner: elasticsearch
+    group: elasticsearch
+
+- name: "创建elasticsearch日志目录"
+  file:
+    path: "{{ elasticsearch_log_path }}"
+    state: directory
+    mode: '0777'
+    owner: elasticsearch
+    group: elasticsearch
+
+- name: "设置ELASTICSEARCH_HOME环境变量"
+  lineinfile:
+    path: /etc/profile
+    regexp: '^(.*)ELASTICSEARCH_HOME=(.*)$'
+    line: export ELASTICSEARCH_HOME={{elasticsearch_home_path}}/{{ elasticsearch_package_name }}
+
+- name: "设置PATH"
+  lineinfile:
+    path: /etc/profile
+    line: export PATH=${ELASTICSEARCH_HOME}/bin:$PATH
+
+- name: "修改目录属主"
+  file:
+    path: "{{ elasticsearch_home_path }}/{{ elasticsearch_package_name }}"
+    owner: elasticsearch
+    group: elasticsearch
+    mode: '0777'
+    recurse: yes
+
+- name: "设置系统参数"
+  lineinfile:
+    path: /etc/security/limits.conf
+    line: '* soft nofile 65536'
+- name: "设置系统参数"
+  lineinfile:
+    path: /etc/security/limits.conf
+    line: '* hard nofile 131072'
+- name: "设置系统参数"
+  lineinfile:
+    path: /etc/security/limits.conf
+    line: '* soft nproc 4096'
+- name: "设置系统参数"
+  lineinfile:
+    path: /etc/security/limits.conf
+    line: '* hard nproc 4096'
+
+- name: "设置系统参数"
+  lineinfile:
+    path: /etc/sysctl.conf
+    line: vm.max_map_count=655360
+
+- name: "检查是否已经启动，如果启动先关闭已启动程序"
+  shell: source /etc/profile; ps -ef | grep  {{ elasticsearch_package_name }} |  grep -v grep  | awk '{print $2}'  |  uniq | xargs -I {} kill -9 {}
+
+- name: "启动elasticsearch"
+  shell: source /etc/profile; sysctl -p ;  su - elasticsearch -c "sh {{ elasticsearch_home_path }}/{{ elasticsearch_package_name }}/bin/elasticsearch  -d"
+
+- name: "添加开机启动到系统执行脚本"
+  lineinfile: path=/etc/rc.d/rc.local line="su - elasticsearch -c '{{ elasticsearch_home_path }}/{{ elasticsearch_package_name }}/bin/elasticsearch  -d'"
+
+- name: "设置开机启动"
+  shell: source /etc/profile; chmod +x /etc/rc.d/rc.local; chmod +x  {{ elasticsearch_home_path }}/{{ elasticsearch_package_name }}/bin/elasticsearch

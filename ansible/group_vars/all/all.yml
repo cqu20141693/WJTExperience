@@ -1,0 +1,16 @@
+nginx_certificate_path: /usr/local/ssl
+work_path: /work/deploy
+# cassandra 配置
+#common_cassandra_host: 192.168.217.143:9042
+common_cassandra_username: cassandra
+common_cassandra_password: cassandra
+# mysql 配置 common_mysql_host不配置时，取host文件中的第一个mysql ip
+#common_mysql_host: 10.168.220.10
+common_mysql_username: root
+common_mysql_password: cc@123#@!.
+# minio 配置
+#common_minio_host: 10.168.220.19
+#common_minio_accessKey: cc
+#common_minio_secretKey: cc@123
+# redis 地址(单节点部署common_redis_sentinel_nodes不填。集群部署common_redis_host不填)
+common_redis_password: root

@@ -1,0 +1,71 @@
+- name: "check install"
+  shell: source /etc/profile; ps -ef | grep  nacos-server.jar |  grep -v grep  | awk '{print $2}'  |  uniq
+  register: checkMsg
+- name:
+  block:
+    - debug:
+        msg: "已安装，自动跳过"
+    - meta: end_play
+  when: checkMsg.stdout != ""
+
+
+- name: "验证JAVA_HOME"
+  shell: source /etc/profile; echo $JAVA_HOME
+  register: JAVA_HOME
+- name:
+  block:
+    - debug:
+        msg: "请设置JAVA_HOME后，再安装"
+    - meta: end_play
+  when: JAVA_HOME.stdout == ""
+
+- name: "创建主目录"
+  file:
+    path: "{{ nacos_parent_dir }}"
+    state: directory
+
+- name: "解压安装包"
+  unarchive: src={{ playbook_dir }}/files/{{ nacos_version }}.zip dest={{ nacos_parent_dir }}
+
+- name: "拷贝Nacos配置文件"
+  template:
+    src: "{{ playbook_dir }}/roles/nacos/nacos_cluster/templates/application.properties.j2"
+    dest: "{{ nacos_parent_dir }}/nacos/conf/application.properties"
+
+- name: "拷贝Nacos配置文件"
+  template:
+    src: "{{ playbook_dir }}/roles/nacos/nacos_cluster/templates/cluster.conf.j2"
+    dest: "{{ nacos_parent_dir }}/nacos/conf/cluster.conf"
+
+- name: "检查是否已经启动，如果启动先关闭已启动程序"
+  shell: source /etc/profile; ps -ef | grep  nacos-server.jar  |  grep -v grep  | awk '{print $2}'  |  uniq | xargs -I {} kill -9 {}
+
+- name: "启动Nacos"
+  shell: source /etc/profile; chmod +x  {{ nacos_parent_dir }}/nacos/bin/startup.sh; sh {{ nacos_parent_dir }}/nacos/bin/startup.sh -m cluster
+
+- name: "添加开机启动到系统执行脚本"
+  lineinfile: path=/etc/rc.d/rc.local line="su - root -c '{{ nacos_parent_dir }}/nacos/bin/startup.sh -m cluster'"
+
+- name: "设置开机启动"
+  shell: source /etc/profile; chmod +x /etc/rc.d/rc.local; chmod +x  {{ nacos_parent_dir }}/nacos/bin/startup.sh
+
+
+- name: "延时90S等待Nacos启动"
+  shell: sleep 90s
+
+- name: "上传nacos配置文件"
+  uri:
+    url: "http://{{ inventory_hostname }}:8848/nacos/v1/cs/configs"
+    method: POST
+    body_format: "form-urlencoded"
+    return_content: yes
+    body: "tenant={{ item.tenant}}&\
+          group={{ item.group }}&\
+          dataId={{ item.dataId }}&\
+          type={{ item.type}}&\
+          content={{ item.content | urlencode }}"
+    status_code: 200
+    headers:
+      Content-Type: "application/x-www-form-urlencoded; charset=UTF-8"
+  with_items: "{{ nacos_config }}"
+  when: inventory_hostname == groups.nacos_cluster[0] and nacos_config != None

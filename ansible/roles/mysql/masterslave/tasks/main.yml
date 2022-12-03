@@ -1,0 +1,130 @@
+- name: "check install"
+  shell: source /etc/profile; ps -ef | grep  mysqld |  grep -v grep  | awk '{print $2}'  |  uniq
+  register: checkMsg
+- name:
+  block:
+    - debug:
+        msg: "已安装，自动跳过"
+    - meta: end_play
+  when: checkMsg.stdout != ""
+
+- name: "创建MySQL安装文件目录"
+  file:
+    path: "{{ mysql_rpm_dir }}"
+    mode: "0777"
+    state: directory
+
+- name: "解压安装包"
+  unarchive:
+    src: "{{ playbook_dir }}/files/mysql-{{ mysql_tar_name }}.rpm-bundle.tar"
+    dest: "{{ mysql_rpm_dir }}"
+
+- name: "安装MySQL"
+  vars:
+    rpms:
+      - "{{ mysql_rpm_dir }}/mysql-community-client-{{ mysql_tar_name }}.rpm"
+      - "{{ mysql_rpm_dir }}/mysql-community-common-{{ mysql_tar_name }}.rpm"
+      - "{{ mysql_rpm_dir }}/mysql-community-libs-{{ mysql_tar_name }}.rpm"
+      - "{{ mysql_rpm_dir }}/mysql-community-libs-compat-{{ mysql_tar_name }}.rpm"
+      - "{{ mysql_rpm_dir }}/mysql-community-server-{{ mysql_tar_name }}.rpm"
+      - "{{ mysql_rpm_dir }}/mysql-community-client-{{ mysql_tar_name }}.rpm"
+      - "{{ mysql_rpm_dir }}/mysql-community-devel-{{ mysql_tar_name }}.rpm"
+  yum:
+    name: "{{ rpms }}"
+    state: present
+
+- name: "复制配置文件"
+  template:
+    src: "{{ playbook_dir }}/roles/mysql/masterslave/templates/my.cnf.j2"
+    dest: /etc/my.cnf
+
+- name: "创建MySQL数据目录"
+  file:
+    path: "{{ mysql_data_dir }}"
+    mode: "0777"
+    owner: mysql
+    group: mysql
+    state: directory
+    recurse: yes
+
+- name: "创建MySQL日志目录"
+  file:
+    path: "{{ mysql_log_dir }}"
+    mode: "0777"
+    owner: mysql
+    group: mysql
+    state: directory
+    recurse: yes
+
+- name: "启动MySQL"
+  service:
+    name: mysqld
+    state: started
+
+- name: "获取临时密码"
+  shell: >
+    echo `grep 'temporary.*root@localhost' "{{ mysql_log_dir }}/mysqld.log" | sed 's/.*root@localhost: //'`
+  register: mysql_root_password_temp
+
+- name: "设置新密码"
+  shell: >
+      mysql -NBe "alter user USER() identified by '{{ mysql_root_password }}';"
+      --connect-expired-password -uroot -p'{{ mysql_root_password_temp.stdout }}'
+
+- name: "安装MySQL-python"
+  yum:
+    name: MySQL-python
+    state: latest
+
+- name: "创建同步用户"
+  mysql_user:
+    name: "{{ mysql_repl_user }}"
+    host: "%"
+    password: "{{ mysql_repl_password }}"
+    priv: "*.*:REPLICATION SLAVE"
+    state: present
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+  when: mysql_role == "master"
+  tags:
+    - create-repl-user
+
+- name: "设置slave节点的master"
+  mysql_replication:
+     mode: changemaster
+     master_host: "{{ master_ip }}"
+     master_user: "{{ mysql_repl_user }}"
+     master_password: "{{ mysql_repl_password }}"
+     master_auto_position: yes
+     login_user: root
+     login_password: "{{ mysql_root_password }}"
+  when: mysql_role == 'slave'
+
+- name: "启动slave节点"
+  mysql_replication:
+     mode: startslave
+     login_user: root
+     login_password: "{{ mysql_root_password }}"
+  when: mysql_role == "slave"
+
+- name: "延时30s等待启动"
+  shell: sleep 30s
+
+#需要自动初始化数据库的时候开启
+- name: "复制数据库初始化脚本"
+  template:
+    src: "{{ playbook_dir }}/roles/mysql/masterslave/templates/data_init.sh.j2"
+    dest: "{{ mysql_rpm_dir }}/data_init.sh"
+  when: (mysql_role == "master" and mysql_create_databases is defined)
+
+- name: "复制数据库初始化sql文件"
+  copy:
+    src: "{{ playbook_dir }}/roles/mysql/files/sql/"
+    dest: "{{ mysql_rpm_dir }}"
+    force: yes
+  when: (mysql_role == "master" and mysql_create_databases is defined)
+
+- name: "执行数据库初始化shell"
+  shell: source /etc/profile; sh {{ mysql_rpm_dir }}/data_init.sh
+  when: (mysql_role == "master" and mysql_create_databases is defined)
+

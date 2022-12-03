@@ -1,0 +1,12 @@
+# 安装基础环境
+- name: Common Configuration
+  hosts: all
+  remote_user: root
+  roles:
+    - common
+# 安装nginx
+- name: Install Elasticsearch
+  hosts: elasticsearch
+  remote_user: root
+  roles:
+    - elasticsearch/standalone

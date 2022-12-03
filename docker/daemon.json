@@ -1,0 +1,22 @@
+{
+  "data-root": "/var/lib/docker",
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m",
+    "max-file": "10"
+  },
+  "default-ulimits": {
+    "nofile": {
+      "Name": "nofile",
+      "Hard": 64000,
+      "Soft": 64000
+    }
+  },
+  "registry-mirrors": [
+    "https://ustc-edu-cn.mirror.aliyuncs.com"
+  ],
+  "insecure-registries": [
+    "10.1.12.143:31104",
+    "harbor.wcc.com:31104"
+  ]
+}
