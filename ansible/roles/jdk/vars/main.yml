@@ -1,6 +1,0 @@
-# Java安装包
-java_tar: jdk-8u202-linux-x64.tar.gz
-# Java版本
-java_version: jdk1.8.0_202
-# JDK安装目录
-jdk_dir: /usr/local

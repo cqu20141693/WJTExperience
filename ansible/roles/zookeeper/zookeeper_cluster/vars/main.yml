@@ -1,4 +1,0 @@
-# Zookeeper安装上级目录
-zookeeper_parent_dir: /usr/local
-# Zookeeper安装包名称
-zookeeper_tar_name: apache-zookeeper-3.5.9-bin

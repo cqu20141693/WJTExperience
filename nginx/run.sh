@@ -1,1 +1,0 @@
-docker run -d --name nginx --cpus 1 -m 1g --privileged=true -p 80:80 -p 443:443 -p 22:22 -v /work/nginx/nginx/conf.d:/etc/nginx/conf.d -v /work/nginx/nginx/nginx.conf:/etc/nginx/nginx.conf  -v /work/nginx/log:/var/log/nginx -v /work/app/html:/app:rw nginx

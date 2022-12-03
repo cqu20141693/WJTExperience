@@ -1,8 +1,0 @@
-# Kafka安装父目录
-kafka_parent_dir: /usr/local
-# Kafka安装包名称
-kafka_tar_name: kafka_2.12-2.2.1
-# 日志目录
-logs_dir: /data/kafka-logs
-# 是否自动创建topic
-auto_create_topics_enable: true

@@ -1,4 +1,0 @@
-nginx_version: nginx-1.21.1
-nginx_parent_dir: /usr/local/src
-nacos_address: 192.168.96.243
-web_user_address: 192.168.96.243
