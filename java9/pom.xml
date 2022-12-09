@@ -4,11 +4,10 @@
     <parent>
         <artifactId>java-basic</artifactId>
         <groupId>com.wcc</groupId>
-        <version>1.0.0</version>
+        <version>${revision}</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-
     <artifactId>java9</artifactId>
     <packaging>jar</packaging>
 
