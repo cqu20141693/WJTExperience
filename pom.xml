@@ -10,12 +10,12 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <version>${revision}</version>
-    <artifactId>open-framework</artifactId>
+    <artifactId>oss-framework</artifactId>
     <groupId>com.wcc</groupId>
     <packaging>pom</packaging>
     <modules>
 
-        <module>easy-excel-sample</module>
+        <module>minio-service</module>
     </modules>
 
     <properties>
