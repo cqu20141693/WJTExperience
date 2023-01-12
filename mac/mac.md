@@ -148,6 +148,12 @@ To start elasticsearch@6 now and restart at login:
 Or, if you don't want/need a background service you can just run:
   elasticsearch
 
+
+nginx :
+/opt/homebrew/etc/nginx
+nginx -t : 检查配置
+nginx -s reload ： 重启
+nginx -s reload ： 重启
 ```
 ``` 
 配置ssh利用git协议管理远程仓库 
