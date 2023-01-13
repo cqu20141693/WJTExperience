@@ -1,0 +1,7 @@
+server:
+  port: 9201
+spring:
+  elasticsearch:
+    uris: https://10.113.75.71:9200
+    username: admin
+    password: admin
