@@ -25,7 +25,7 @@ http {
     sendfile            on;
     tcp_nopush          on;
     tcp_nodelay         on;
-    keepalive_timeout   1800;
+    keepalive_timeout   1800; #连接超时时间，默认为75s，可以在http，server，location块。
     types_hash_max_size 2048;
 
     client_max_body_size 512M;
