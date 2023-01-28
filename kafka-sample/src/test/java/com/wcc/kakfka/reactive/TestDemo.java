@@ -44,7 +44,9 @@ public class TestDemo {
         kafkaProperties.getConsumer().setClientId("cc-test-1");
         kafkaProperties.getConsumer().setGroupId("cc-iot-reactor");
 
-        List<String> topics = Collections.singletonList(KafkaConstants.QUICK_EVENT_TOPIC);
+        List<String> topics = new ArrayList<>();
+        topics.add(KafkaConstants.QUICK_EVENT_TOPIC);
+        topics.add(KafkaConstants.DEVICE_DATA_TOPIC);
         initConsumer(kafkaProperties, topics);
         receiver.receiveAutoAck()
                 .flatMap(Function.identity())
@@ -72,7 +74,9 @@ public class TestDemo {
         properties.put("security.protocol","SASL_PLAINTEXT");
         properties.put("sasl.mechanism","PLAIN");
         properties.put("sasl.jaas.config","org.apache.kafka.common.security.scram.ScramLoginModule required username=\"admin\" password=\"RaTVU5KifGcdwJRA\";");
-        List<String> topics = Collections.singletonList(KafkaConstants.QUICK_EVENT_TOPIC);
+        List<String> topics = new ArrayList<>();
+        topics.add(KafkaConstants.QUICK_EVENT_TOPIC);
+        topics.add(KafkaConstants.DEVICE_DATA_TOPIC);
         initConsumer(kafkaProperties, topics);
         receiver.receiveAutoAck()
                 .flatMap(Function.identity())
