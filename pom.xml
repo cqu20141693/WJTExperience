@@ -15,6 +15,7 @@
     <modules>
 
         <module>kafka-sample</module>
+        <module>event-bus</module>
     </modules>
 
     <properties>
