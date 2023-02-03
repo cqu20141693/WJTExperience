@@ -160,3 +160,12 @@ nginx -s reload ： 重启
 ```
 
 10. postman
+11. 新建文件和命令窗口
+```
+touch file
+
+```
+12. 查看隐藏文件
+```  
+cmd+shift+. 
+```

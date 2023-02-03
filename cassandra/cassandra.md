@@ -40,6 +40,9 @@ migrate_schema.sh iiot iiot_v3 cassandra cassandra 10.1.12.70
 3. table
 
 ```sql
+
+alter table test_ttl.empty_table with default_time_to_live= 120 AND gc_grace_seconds = 0;
+
 CREATE TABLE monkey_species
 (
     species      text PRIMARY KEY,
