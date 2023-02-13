@@ -9,12 +9,13 @@
         <groupId>com.wcc</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <version>${revision}</version>
+    <version>1.0.0</version>
     <artifactId>data-storage-java</artifactId>
     <packaging>pom</packaging>
     <modules>
 
         <module>opensearch-demo</module>
+        <module>oracle-demo</module>
     </modules>
 
     <properties>

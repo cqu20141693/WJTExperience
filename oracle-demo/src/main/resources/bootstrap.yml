@@ -1,0 +1,15 @@
+spring:
+  #数据库配置
+  datasource:
+    driverClassName: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@//173.27.95.122:1521/helowin
+    username: mike
+    password: mikeops
+    hikari:
+      connection-timeout: 10000
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    call-setters-on-nulls: true
+    map-underscore-to-camel-case: true

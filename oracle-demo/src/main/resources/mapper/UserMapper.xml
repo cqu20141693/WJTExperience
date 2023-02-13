@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--UserMapper的全类名-->
+<mapper namespace="com.wee.oracle.mapper.UserMapper">
+    <!--返回数据集，column为数据库的名字，jdbcType为数据库的类型，property为pojo的名字-->
+    <resultMap id="resultMap" type="com.wee.oracle.domain.User">
+        <result column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="USER_NAME" jdbcType="VARCHAR" property="userName"/>
+        <result column="PASSWORD" jdbcType="VARCHAR" property="password"/>
+    </resultMap>
+
+    <!--id要对应上，注意这里不要带分号-->
+    <select id="findAllUser" resultMap="resultMap">
+        select * from MY_USER
+    </select>
+
+</mapper>
