@@ -263,7 +263,6 @@ CREATE TABLE `tenant_info`  (
 -- ----------------------------
 -- Records of tenant_info
 -- ----------------------------
-INSERT INTO `tenant_info` VALUES (1, '1', '0e27345a-184d-4fa2-a0f3-b28d8dd4bf7f', 'geely', 'geely', 'nacos', 1632390939139, 1632390939139);
 INSERT INTO  `tenant_info` VALUES (2, '1', '4804405f-f1b6-4534-8478-53aab1a18253', 'G', 'G', 'nacos', 1632390939139, 1632390939139);
 
 -- ----------------------------

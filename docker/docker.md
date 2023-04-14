@@ -127,6 +127,9 @@ docker run -d --name es7 --cpus=1 -m 2g \
 docker logs -f es7 |grep 'name1|name2' >> log.txt
 // 查看最新两百条并持续查看
 docker logs -f --tail=200 es7 |grep -v 'nacos.client'
+
+// 时间过滤
+docker logs --since="2023-01-04T00:00:00" --until "2021-07-28T10:15:00 
 ```
 
 #### docker exec

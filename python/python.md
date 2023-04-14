@@ -22,4 +22,6 @@ pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 2. 安装依赖
 ``` 
 python setup.py install
+
+pip install -r requirements/testing.txt
 ```

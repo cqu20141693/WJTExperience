@@ -169,3 +169,17 @@ touch file
 ```  
 cmd+shift+. 
 ```
+13. mac 使用sz，rz
+```markdown  
+1. [sz,rz](https://zhuanlan.zhihu.com/p/110364613)
+2. [Mac-iTerm2安装、配置和使用](https://zhuanlan.zhihu.com/p/435518571)
+
+```
+14. mac 配置idea编辑器打开文件
+``` 
+vim ~/.bash_profile 
+# 设置默认打开
+alias "idea=open -a /Applications/idea.app"
+
+source ~/.zshrc
+```

@@ -4,7 +4,25 @@
 
 ``` 
 unzip deploy-tool.zip
-tar -xvf ansible_v2.9.9_install.tar.gz
+zip -r mydata.zip mydata #压缩mydata目录
+zip iiot-web-3.2.zip iiot-web-3.2.tar all.zip
+
+压缩
+
+tar -czvf 打包后生成的文件名全路径 要打包的目录
+tar -czvf /home/xahot.tar.gz /xahot
+
+tar –czf jpg.tar.gz *.jpg //将目录里所有jpg文件打包成jpg.tar后，并且将其用gzip压缩，生成一个gzip压缩过的包，命名为jpg.tar.gz
+
+
+解压
+
+tar –xvf file.tar //解压 tar包
+
+tar -xzvf file.tar.gz //解压tar.gz
+
+tar -xjvf file.tar.bz2   //解压 tar.bz2tar –xZvf file.tar.Z //解压tar.Z
+
 ```
 
 ### 磁盘
@@ -121,6 +139,7 @@ ssh 'root@192.168.96.234'
 sudo useradd username -m #创建用户
 sudo userdel -r username #删除用户
 su username #切换到指定用户，username指的是用户名
+sudo -i 切换到root
 ```
 
 #### 账户切换
@@ -219,4 +238,38 @@ wget --no-check-certificate --quiet \
   --header '' \
   -O ansible_v2.9.9_install.tar.gz \
    'http://10.113.75.63:9090/deploy/ansible_v2.9.9_install.tar.gz'
+```
+### yum
+1. yum list只会列出最新版本
+   yum list docker-ce --showduplicates | sort -r
+2. yum 下载rpm包
+```
+rpm provides repotrack : 下载repotrack
+下载yum-utils
+
+repotrack -p savepath 安装软件名（ansible）
+
+```
+3. yum 安装指定rpm包
+```   
+ rpm -ivh *.rpm --nodeps --force
+ 
+ yum localinstall file.rpm ｜ yum localinstall *.rpm
+ 
+```
+### scp
+``` 
+scp [OPTIONS] [[user@]src_host:]file [[user@]dest_host:]file
+
+options: 
+P（大写）- 指定要连接到远程主机上的端口
+p（小写）- 保留用于修改和访问的时间戳
+r - 递归复制整个目录
+q - 安静模式，不显示进度或消息
+C - 在传输过程中压缩数据
+
+scp ansible_v2.9.0_install.sh root@10.0.70.89:/tmp
+scp ansible_v2.9.0_install.sh root@10.168.220.17:/tmp
+
+可以配置免密，或者使用密码访问
 ```
