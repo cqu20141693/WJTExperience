@@ -5,15 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <version>${revision}</version>
-    <artifactId>java-basic</artifactId>
+    <artifactId>logs</artifactId>
     <groupId>com.wcc</groupId>
     <packaging>pom</packaging>
     <modules>
 
+        <module>boot-logback</module>
     </modules>
 
     <properties>
         <revision>1.0.0</revision>
+        <spring.boot.version>2.6.11</spring.boot.version>
     </properties>
     <dependencies>
         <dependency>
@@ -52,6 +54,18 @@
             <version>31.1-jre</version>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-parent</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <build>
 
         <plugins>

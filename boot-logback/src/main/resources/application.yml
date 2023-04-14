@@ -1,0 +1,10 @@
+#log:
+#  path: /Users/gymd/work/java-project/JWTExperience/log
+spring:
+  application:
+    name: boot-logback
+logging:
+  level:
+    com.witeam.log.debugComponent: debug
+    com.witeam.log.App: debug
+
