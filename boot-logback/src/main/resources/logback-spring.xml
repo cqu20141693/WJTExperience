@@ -47,7 +47,7 @@
     </appender>
     <!-- Appender to log to file -->
     <appender name="debugFlatFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="com.witeam.log.filter.FixLevelFilter">
+        <filter class="com.witeam.logback.filter.FixLevelFilter">
             <level>debug</level>
         </filter>
         <prudent>false</prudent>
