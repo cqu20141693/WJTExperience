@@ -1,11 +1,9 @@
 package com.wcc.reactor;
 
 import com.wcc.flux.util.AggType;
-import com.wcc.flux.util.CastUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.GroupedFlux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.UnicastProcessor;
 
@@ -68,13 +66,13 @@ public class WindowTest {
         Flux.fromIterable(maps)
                 // as 数据分组
                 .as(mapFlux -> mapFlux.groupBy(v -> v.get("deviceId"))
-                        .flatMap(g->g.window(3))
+                        .flatMap(g -> g.window(3))
                 ).flatMap(group -> {
                     Flux<Map<String, Integer>> filter = group.filter(data -> (data.get("value") & 2) == 0);
 //                    Flux<Map<String, Integer>> mapFlux = handleFirst ? filter.take(1) : filter.takeLast(1);
 //                    return filter.count().filter(i -> i >= counter).flatMapMany(i -> mapFlux);
-                    return filter.collectList().flatMap(list->{
-                        if(list.size()>=counter){
+                    return filter.collectList().flatMap(list -> {
+                        if (list.size() >= counter) {
                             Map<String, Integer> stringIntegerMap = handleFirst ? list.get(0) : list.get(list.size() - 1);
                             return Mono.just(stringIntegerMap);
                         }
