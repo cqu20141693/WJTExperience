@@ -9,7 +9,7 @@ cassandra_log_path: /var/log/cassandra
 # cassandra集群名称
 cassandra_cluster_name: cc_iiot_cassandra
 # cassandra seeds
-#cassandra_seeds: '"10.113.75.65,10.113.75.66"'
+#cassandra_seeds: '"192.168.0.65,192.168.0.66"'
 
 # cassandra 管理员用户名
 cassandra_superuser_name: "{{ common_cassandra_username | default(cassandra) }}"

@@ -5,12 +5,12 @@ work_path: /work/deploy
 common_cassandra_username: cassandra
 common_cassandra_password: cassandra
 # mysql 配置 common_mysql_host不配置时，取host文件中的第一个mysql ip
-#common_mysql_host: 10.168.220.10
+#common_mysql_host: 192.168.220.10
 common_mysql_username: root
 common_mysql_password: cc@123#@!.
 # minio 配置
-#common_minio_host: 10.168.220.19
-#common_minio_accessKey: cc
-#common_minio_secretKey: cc@123
+#common_minio_host: ip
+#common_minio_accessKey: accessKey
+#common_minio_secretKey: secretKey
 # redis 地址(单节点部署common_redis_sentinel_nodes不填。集群部署common_redis_host不填)
 common_redis_password: root

@@ -20,9 +20,9 @@ systemctl start rabbitmq-server.service
 ``` 
 
 rabbitmq-plugins enable rabbitmq_management
-rabbitmqctl add_user admin apaas2022
-rabbitmqctl set_user_tags admin administrator
-rabbitmqctl set_permissions -p / admin ".*" ".*" ".*"
+rabbitmqctl add_user user_name pwd
+rabbitmqctl set_user_tags user_name administrator
+rabbitmqctl set_permissions -p / user_name ".*" ".*" ".*"
 #重启rabbitmq
 systemctl restart rabbitmq-server.service
 
@@ -30,5 +30,5 @@ systemctl restart rabbitmq-server.service
 rabbitmqctl  list_users  
 
 # 修改密码
-rabbitmqctl  change_password  admin  'cc@123456'
+rabbitmqctl  change_password  user_name  'cc@123456'
 ```

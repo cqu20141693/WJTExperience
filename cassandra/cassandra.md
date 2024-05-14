@@ -35,7 +35,7 @@ migrate_schema.sh iiot iiot_v3 cassandra cassandra 10.1.12.70
 
 
 
-10.128.81.200
+192.128.81.200
 
 3. table
 

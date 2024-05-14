@@ -237,7 +237,7 @@ wget --no-check-certificate --quiet \
   --timeout=0 \
   --header '' \
   -O ansible_v2.9.9_install.tar.gz \
-   'http://10.113.75.63:9090/deploy/ansible_v2.9.9_install.tar.gz'
+   'http://192.168.0.63:9090/deploy/ansible_v2.9.9_install.tar.gz'
 ```
 ### yum
 1. yum list只会列出最新版本
@@ -269,7 +269,7 @@ q - 安静模式，不显示进度或消息
 C - 在传输过程中压缩数据
 
 scp ansible_v2.9.0_install.sh root@10.0.70.89:/tmp
-scp ansible_v2.9.0_install.sh root@10.168.220.17:/tmp
+scp ansible_v2.9.0_install.sh root@192.168.220.17:/tmp
 
 可以配置免密，或者使用密码访问
 ```

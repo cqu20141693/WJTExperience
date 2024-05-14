@@ -14,7 +14,7 @@ mysql_create_databases:
   - databaseName: nacos
     databaseFile: nacos.sql
 
-# 数据库内容替换 10.113.75.73：原始内容（不做修改）
+# 数据库内容替换 192.168.0.73：原始内容（不做修改）
 #database_replace_content:
 #  - databaseFile: iam.sql
-#    replaceContent: 10.113.75.73/{{ common_web_address }}
+#    replaceContent: 192.168.0.73/{{ common_web_address }}
